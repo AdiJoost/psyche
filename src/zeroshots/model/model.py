@@ -34,7 +34,12 @@ class LLMModel():
         os.makedirs(path, exist_ok=True)
     
     def predict(self) -> None:
-        self.neutralData["PREDICTION"] = self.neutralData["TEXT"].progress_apply(lambda x: self.guessIsSuicidal(message=x))
+        if(self.neutralData):
+            self.neutralData["PREDICTION"] = self.neutralData["TEXT"].progress_apply(lambda x: self.guessIsSuicidal(message=x))
+        if(self.suicideData):
+            self.suicideData["PREDICTION"] = self.suicideData["TEXT"].progress_apply(lambda x: self.guessIsSuicidal(message=x))
+        if (self.depressionData):
+            self.depressionData["PREDICTION"] = self.depressionData["TEXT"].progress_apply(lambda x: self.guessIsSuicidal(message=x))
         
     def guessIsSuicidal(self, message: dict) -> int:
         messages = self.getMessages(message)
@@ -58,7 +63,12 @@ class LLMModel():
 
     def saveResults(self):
         safe_model_name = self.model_name.replace(":", "_")
-        path = getRootPath().joinpath(f"data/results/{safe_model_name}_neutral.csv")
-        print(str(path))
-        print(self.neutralData.head())
-        self.neutralData.to_csv(path, index=False)
+
+        pathNeutral = getRootPath().joinpath(f"data/results/{safe_model_name}_neutral.csv")
+        self.neutralData.to_csv(pathNeutral, index=False)
+
+        pathSuicidal = getRootPath().joinpath(f"data/results/{safe_model_name}_suicidal.csv")
+        self.suicideData.to_csv(pathSuicidal, index=False)
+
+        pathDepression = getRootPath().joinpath(f"data/results/{safe_model_name}_depression.csv")
+        self.depressionData.to_csv(pathDepression, index=False)
