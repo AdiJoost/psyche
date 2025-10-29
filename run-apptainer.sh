@@ -35,7 +35,7 @@ apptainer exec \
   --env ollama_host=$OLLAMA_HOST \
   --env open_ai_host=$OPEN_AI_HOST \
   --env-file "$PSYCHE_DIR/.env" \
-  --bind "$AGENTS_DIR:/psyche" \
+  --bind "$PSYCHE_DIR:/psyche" \
   --pwd /psyche \
   psyche.sif \
   python run.py
