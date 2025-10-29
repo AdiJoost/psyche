@@ -34,11 +34,11 @@ class LLMModel():
         os.makedirs(path, exist_ok=True)
     
     def predict(self) -> None:
-        if(self.neutralData):
+        if(self.neutralData is not None):
             self.neutralData["PREDICTION"] = self.neutralData["TEXT"].progress_apply(lambda x: self.guessIsSuicidal(message=x))
-        if(self.suicideData):
+        if(self.suicideData is not None):
             self.suicideData["PREDICTION"] = self.suicideData["TEXT"].progress_apply(lambda x: self.guessIsSuicidal(message=x))
-        if (self.depressionData):
+        if (self.depressionData is not None):
             self.depressionData["PREDICTION"] = self.depressionData["TEXT"].progress_apply(lambda x: self.guessIsSuicidal(message=x))
         
     def guessIsSuicidal(self, message: dict) -> int:
