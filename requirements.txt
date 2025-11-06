@@ -3,3 +3,5 @@ notebook
 openai
 tqdm
 ollama
+dotenv
+datasets

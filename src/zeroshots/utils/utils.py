@@ -5,10 +5,11 @@ from config.rootPath import getRootPath
 from ollama import Client
 
 
-def loadData(dataPath: str) -> pd.DataFrame:
+def loadData(dataPath: str, dropLabel=True) -> pd.DataFrame:
     path = getRootPath().joinpath(dataPath)
     df = pd.read_csv(path)
-    df.drop(columns=["Label"], inplace=True)
+    if dropLabel:
+        df.drop(columns=["Label"], inplace=True)
     return df
 
 def pullModel(modelname:str):
