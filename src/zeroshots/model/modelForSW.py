@@ -14,9 +14,11 @@ class SWModel():
     systemRole = "You are a helpful assistant. You are task with identifying, whether the post came from a person, that is suicidal or not. You get the title of the post and the text from the post. Answere only with 'yes' or 'no' Just do it."
 
 
-    def __init__(self, model_name: str, dataPath: str, baseURL: str="http://127.0.0.1:11434/v1"):
+    def __init__(self, model_name: str, dataPath: str, modelNamePrefix: str, baseURL: str="http://127.0.0.1:11434/v1", temperature=0.0):
         self.model_name = model_name
         self.dataPath = dataPath
+        self.modelNamePrefix = modelNamePrefix
+        self.temperature = temperature
         self.data = loadData(dataPath, dropLabel=False)
         self.baseURL = baseURL
         self.init_client()
@@ -26,7 +28,8 @@ class SWModel():
             base_url=self.baseURL,
             api_key="ollama"
         )
-        path = getRootPath().joinpath("data/results/kaggle_data")
+        saveName = self.getSaveName()
+        path = getRootPath().joinpath(f"data/results/{saveName}/{self.modelNamePrefix}")
         os.makedirs(path, exist_ok=True)
     
     def predict(self) -> None:
@@ -36,7 +39,8 @@ class SWModel():
         messages = self.getMessages(row)
         response = self.client.chat.completions.create(
         model = self.model_name,
-        messages=messages
+        messages=messages,
+        temperature=self.temperature
         )
         answere = response.choices[0].message.content
         if answere.strip().lower() == "yes":
@@ -54,8 +58,10 @@ class SWModel():
             {"role": "user", "content": userQuestion},
         ]
 
-    def saveResults(self):
-        safe_model_name = self.model_name.replace(":", "_").replace("/", "_")
+    def getSaveName(self):
+        return self.model_name.replace(":", "_").replace("/", "_")
 
-        resultPath = getRootPath().joinpath(f"data/results/kaggle_data/{safe_model_name}.csv")
+    def saveResults(self):
+        safe_model_name = self.getSaveName()
+        resultPath = getRootPath().joinpath(f"data/results/{safe_model_name}/{self.modelNamePrefix}/temp_{self.temperature}.csv")
         self.data.to_csv(resultPath, index=False)

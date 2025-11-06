@@ -1,0 +1,5 @@
+matplotlib
+datasets
+notebook
+scikit-learn
+seaborn

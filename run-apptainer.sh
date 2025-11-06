@@ -23,7 +23,7 @@ apptainer exec \
   --env OLLAMA_MODELS=/root/.ollama/models \
   --nv \
   ollama.sif \
-  ollama serve &
+  ollama serve > /dev/null &
 
 sleep 5
 
