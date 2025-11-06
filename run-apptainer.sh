@@ -25,6 +25,8 @@ apptainer exec \
   ollama.sif \
   ollama serve > /dev/null &
 
+OLLAMA_PID=$!
+
 sleep 5
 
 # Get absolute path to the Psyche directory (where this script is)
@@ -39,3 +41,10 @@ apptainer exec \
   --pwd /psyche \
   psyche.sif \
   python run.py
+
+echo "Shutting down Ollama..."
+kill $OLLAMA_PID
+
+wait $OLLAMA_PID 2>/dev/null || true
+
+echo "Cleanup complete"
