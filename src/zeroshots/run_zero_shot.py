@@ -59,7 +59,7 @@ def run_suicide_watch():
                     modelNamePrefix="zeroShot",
                     temperature=temperature,
                     baseURL=baseURL)
-                print(f"Predicting for model: {model}")
+                print(f"Predicting for model: {model}, temperature: {temperature}")
                 llmModel.predict()
                 print(f"Saving results for model: {model}")
                 llmModel.saveResults()
