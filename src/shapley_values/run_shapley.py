@@ -19,7 +19,7 @@ def run_shapley():
                 pullModel( modelname=model)
                 llmModel = ShapleyAgent(
                     model_name=model,
-                    dataPath=super_small_path,
+                    dataPath=cut_data_path,
                     temperature=temperature,
                     baseURL=baseURL)
                 print(f"Predicting for model: {model}, temperature: {temperature}")
