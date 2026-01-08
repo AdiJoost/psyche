@@ -14,16 +14,18 @@ models = [
     "gemma3:27b",
     "mistral:7b"]"""
 
-models = ["artifish/llama3.2-uncensored:latest",
-          "llama3.2:latest"]
+models = ["artifish/llama3.2-uncensored:latest"]
 
-temperatures = [0.0, 0.2, 0.5, 1.0, 2.0]
+temperatures = [0.0]
 
 dataPathDepression = "data/thoughts/Depression.csv"
 dataPathNeutral = "data/thoughts/Neutral.csv"
 dataPathSuicidal = "data/thoughts/Suicadal_tendencies_data.csv"
 suicide_watch_path = "data/thoughts/sample_data_1.csv"
 kaggle_path="data/thoughts/kaggle_data.csv"
+super_small_path="data/thoughts/supersmall.csv"
+
+
 
 def run():
     logger = Logger(filename="run_log")
@@ -55,12 +57,13 @@ def run_suicide_watch():
                 pullModel( modelname=model)
                 llmModel = SWModel(
                     model_name=model,
-                    dataPath=kaggle_path,
+                    dataPath=super_small_path,
                     modelNamePrefix="zeroShot",
                     temperature=temperature,
-                    baseURL=baseURL)
+                    baseURL=baseURL,
+                    maxWords=10)
                 print(f"Predicting for model: {model}, temperature: {temperature}")
-                llmModel.predict()
+                llmModel.predict_shaply()
                 print(f"Saving results for model: {model}")
                 llmModel.saveResults()
             except Exception as e:

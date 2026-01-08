@@ -3,3 +3,4 @@ openai
 tqdm
 ollama
 dotenv
+fastmcp
